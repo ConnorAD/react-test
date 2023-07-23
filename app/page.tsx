@@ -3,21 +3,54 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import { easing } from 'maath';
 import { Model } from './Old_computers';
 import { Floor } from './floor';
+import { EffectComposer, Bloom, DepthOfField } from '@react-three/postprocessing'
+import { useRef, useState } from 'react'
+
+function Box (props: any) {
+
+  // Hold state for hovered and clicked events.
+  const [hovered, hover] = useState(false)
+  const [clicked, click] = useState(false)
+
+  // Subscribe this component to the render-loop and rotate the mesh every frame.
+  
+
+  // Return the view.
+  // These are regular three.js elements expressed in JSX.
+  return (
+    <mesh      
+      {...props}
+      scale={0.5}
+      onClick={(event) => window.open("cube.jpg")}
+      onPointerOver={(event) => hover(true)}
+      onPointerOut={(event) => hover(false)}
+    > 
+      <boxGeometry args={[1, 1, 1]} />      
+      <meshStandardMaterial color={hovered ? 'darkgreen' : 'lightgreen' } />    
+    </mesh>
+  )
+}
 
 
 export default function Home() {
   return (
     <main className="flex min-h-screen min-w-screen justify-center">
-      <div className="absolute z-10 text-center font-semibold"><h2 className={"mb-3 text-2xl"}>connordavis.xyz</h2><h3>Under Construction</h3></div>
+      <div className="absolute z-10 text-center font-semibold"><h2 className={"mb-3 text-2xl"}>connordavis.xyz</h2></div>
       <div className="z-0">
-        <Canvas style={{width: '100vw', height: '100vh'}}shadows dpr={[1, 1.5]}camera={{ position: [-1.5, 1, 5.5], fov: 45, near: 1, far: 20 }}>
-      <color attach="background" args={['#000000']} />
-      <ambientLight intensity={0.5} />      
-      <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />      
-      <pointLight position={[-10, -10, -10]} />      
-      <Model />  
-      <Floor />
-      <CameraRig />
+      <Canvas style={{width: '100vw', height: '100vh'}}shadows dpr={[1, 1.5]}camera={{ position: [-1.5, 1, 5.5], fov: 45, near: 1, far: 20 }}>
+        <color attach="background" args={['#000000']} />
+        <ambientLight intensity={0.5} />      
+        <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />      
+        <pointLight position={[-10, -10, -10]} />      
+        <Model />  
+        <Box position={[3, 3.4, -0.2]} />     
+        <Floor />
+        <CameraRig />
+        <EffectComposer disableNormalPass>
+          <Bloom luminanceThreshold={0} mipmapBlur luminanceSmoothing={0.0} intensity={6} />
+          <DepthOfField target={[0, 0, 13]} focalLength={3} bokehScale={15} height={700} />
+        </EffectComposer>
+
       </Canvas>
       </div>
       
