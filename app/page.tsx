@@ -12,11 +12,6 @@ function Box (props: any) {
   const [hovered, hover] = useState(false)
   const [clicked, click] = useState(false)
 
-  // Subscribe this component to the render-loop and rotate the mesh every frame.
-  
-
-  // Return the view.
-  // These are regular three.js elements expressed in JSX.
   return (
     <mesh      
       {...props}
@@ -54,7 +49,7 @@ export default function Home() {
       </Canvas>
       </div>
       
-   <div className="grid absolute bottom-0 lg:mb-0 lg:grid-cols-4 lg:text-left">
+   <div className="grid absolute bottom-0 lg:mb-0 lg:grid-cols-3 lg:text-center">
      <a
        href="https://github.com/ConnorAD/react-test"
        className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
@@ -70,21 +65,7 @@ export default function Home() {
      </a>
  
      <a
-       href="https://github.com/ConnorAD/react-test/blob/master/credits.md"
-       className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-       target="_blank"
-       rel="noopener noreferrer"
-     >
-       <h2 className={`mb-3 text-2xl font-semibold`}>
-         Credits{' '}
-         <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-           -&gt;
-         </span>
-       </h2>
-     </a>
- 
-     <a
-       href="https://docs.google.com/document/d/1R4iUOIxNBK9nt-yuKZHVtedDszn_yuT3t9heL1kwuso/edit?usp=sharing"
+       href="../Connor%20Davis%20Resume%20CV.pdf"
        className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
        target="_blank"
        rel="noopener noreferrer"
