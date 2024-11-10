@@ -3,12 +3,13 @@ import { Scroll, ScrollControls, useScroll, useTexture } from '@react-three/drei
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { useRef } from 'react';
 import { F22model } from './F22';
+import { Mesh } from 'three';
 
 
 
 
 function Scene() {
-  const meshRef = useRef();
+  const meshRef = useRef<Mesh>(null);
   const scroll = useScroll();
   const { viewport } = useThree();  // Get the viewport dimensions
 
@@ -28,7 +29,7 @@ function Scene() {
   return (
     <>
       {/* Background image plane */}
-      <mesh position={[0, 0, -20]}>
+      <mesh position={[1, 0, -20]}>
         <planeGeometry args={[viewport.width * 6, viewport.height * 6]} />
         <meshBasicMaterial attach="material" map={texture} />
       </mesh>
