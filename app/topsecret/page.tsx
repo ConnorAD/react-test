@@ -15,12 +15,12 @@ function Scene() {
 
   const texture = useTexture('/oceanbg.jpg');
   // Update the 3D object’s position based on scroll position
-  useFrame(() => {
+  useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.position.z = scroll.offset * -20;
-      meshRef.current.position.y = scroll.offset * 20;
+      meshRef.current.position.z = (scroll.offset * -20) + (Math.sin(state.clock.getElapsedTime()*0.5) * 0.3);
+      meshRef.current.position.y = -1.2 + scroll.offset * 20;
 
-      meshRef.current.rotation.x = 0.3 - scroll.offset * 0.4;
+      meshRef.current.rotation.x = 0.3 - scroll.offset * 0.4+ (Math.sin(0.2+state.clock.getElapsedTime()*0.35) * 0.1);
       meshRef.current.rotation.y = 0 - scroll.offset * 0.3;
 
     }
@@ -35,8 +35,8 @@ function Scene() {
       </mesh>
 
       {/* 3D Object */}
-      <mesh ref={meshRef} position={[0, 0, 0]} rotation={[0.3, 0, 0]}>
-        <F22model scale={0.35} />
+      <mesh ref={meshRef} position={[0.6, 0, 0]} rotation={[0.3, 0, 0]}>
+        <F22model scale={0.45} />
 
       </mesh>
     </>
