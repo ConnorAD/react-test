@@ -88,8 +88,8 @@ export default function ThreeDPage() {
       </div>
 
       <Canvas>
-        <ambientLight intensity={1} />
-        <pointLight position={[1, 5, -3]} intensity={3} />
+        <ambientLight intensity={0.8} />
+        <pointLight position={[1, 10, -3]} intensity={1} />
         {/* Enables smooth scrolling behavior */}
         <ScrollControls pages={2} distance={1}>
           <Scroll>
