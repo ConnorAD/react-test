@@ -10,6 +10,9 @@ module.exports = {
       colors: {
         'soiBlue': '#17375e',
         'soiGrey': '#222222',
+        'soiGreyText': '#565353',
+        'soiLightGreyText': '#a0a0a0',
+        'soiRed': '#ae2128',
       },
 
       backgroundImage: {

@@ -17,11 +17,16 @@ function Scene() {
   // Update the 3D object’s position based on scroll position
   useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.position.z = (scroll.offset * -20) + (Math.sin(state.clock.getElapsedTime()*0.5) * 0.3);
-      meshRef.current.position.y = -1.2 + scroll.offset * 20;
+      meshRef.current.position.z = Math.max(scroll.offset * -30, -16) + (Math.sin(state.clock.getElapsedTime()*0.5) * 0.45);
+      //meshRef.current.position.y = Math.min(1.2, Math.max(-1.2, -1.2 + scroll.offset * 2));
+      meshRef.current.position.y = -1.2 - Math.min(30, scroll.offset * 16);
+      meshRef.current.position.x = 0 + Math.min(16, scroll.offset * 30);
 
-      meshRef.current.rotation.x = 0.3 - scroll.offset * 0.4+ (Math.sin(0.2+state.clock.getElapsedTime()*0.35) * 0.1);
-      meshRef.current.rotation.y = 0 - scroll.offset * 0.3;
+      meshRef.current.position.y = -1.2 - scroll.offset * 16;
+
+
+      meshRef.current.rotation.x = 0.5 - Math.min(6.2, scroll.offset*16) + (Math.sin(0.2+state.clock.getElapsedTime()*0.35) * 0.15);
+      meshRef.current.rotation.y = 0 ;
 
     }
   });
@@ -30,7 +35,7 @@ function Scene() {
     <>
       {/* Background image plane */}
       <mesh position={[1, 0, -20]}>
-        <planeGeometry args={[viewport.width * 6, viewport.height * 6]} />
+        <planeGeometry args={[viewport.width * 10, viewport.height * 10]} />
         <meshBasicMaterial attach="material" map={texture} />
       </mesh>
 
@@ -88,10 +93,10 @@ export default function ThreeDPage() {
       </div>
 
       <Canvas>
-        <ambientLight intensity={0.8} />
-        <pointLight position={[1, 10, -3]} intensity={1} />
+        <ambientLight intensity={0.2} />
+        <pointLight position={[1, 10, -3]} intensity={2} distance={200}/>
         {/* Enables smooth scrolling behavior */}
-        <ScrollControls pages={2} distance={1}>
+        <ScrollControls pages={3} distance={1}>
           <Scroll>
             <Scene />
           </Scroll>
@@ -108,10 +113,39 @@ export default function ThreeDPage() {
                 <span className="text-2xl text-white animate-bounce delay-500">▼</span>
               </div>
             </div>
-            <div className="absolute top-[120vh] w-screen h-[85vh] bg-white z-99">
-              <img src='/soiPage.png' height={'100%'} width={'100%'} />
-            </div>
+            <div className="absolute top-[120vh] w-screen flex justify-center items-center h-fit z-99">
+  <div className="bg-white rounded-3xl p-6 h-fit w-[80vw] flex flex-col justify-center items-center">
+    <h2 className="text-5xl font-bold text-soiRed mb-6">ABOUT US</h2>
+    <p className="text-soiGreyText text-[1.3em] text-justify font-medium">
+    We specialize in finding innovative solutions to the most complex challenges in the aviation spare parts industry. With years of experience and a dedication to excellence, we are committed to delivering results that exceed your expectations. Whether you need help with sourcing, research, or any other aspect of the spare parts in the aviation industry, we have the knowledge and expertise to help you succeed. We can help you find solutions to your aviation spare parts issues.
+    </p>
+  </div>
+</div>
+
+            <div className="absolute top-[220vh] w-screen py-10 items-center">
+
+            <div className="flex flex-col items-center w-full py-10 bg-neutral-800/20">
+  <h2 className="text-5xl font-semibold text-white mb-6">Our Clients</h2>
+  
+  <div className="relative overflow-hidden w-full">
+    <div className="flex gap-6 animate-slide">
+      {/* Replace these divs with images/logos of clients */}
+      <div className="w-32 h-16 flex items-center justify-center bg-neutral-700 rounded-md text-white">Client A</div>
+      <div className="w-32 h-16 flex items-center justify-center bg-neutral-700 rounded-md text-white">Client B</div>
+      <div className="w-32 h-16 flex items-center justify-center bg-neutral-700 rounded-md text-white">Client C</div>
+      <div className="w-32 h-16 flex items-center justify-center bg-neutral-700 rounded-md text-white">Client D</div>
+      <div className="w-32 h-16 flex items-center justify-center bg-neutral-700 rounded-md text-white">Client E</div>
+      {/* Duplicate the items to create a continuous scroll */}
+      <div className="w-32 h-16 flex items-center justify-center bg-neutral-700 rounded-md text-white">Client A</div>
+      <div className="w-32 h-16 flex items-center justify-center bg-neutral-700 rounded-md text-white">Client B</div>
+      <div className="w-32 h-16 flex items-center justify-center bg-neutral-700 rounded-md text-white">Client C</div>
+    </div>
+    </div>
+  </div>
+</div>
           </Scroll>
+          
+          
         </ScrollControls>
 
       </Canvas>
