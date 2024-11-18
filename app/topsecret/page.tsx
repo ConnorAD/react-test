@@ -1,52 +1,16 @@
 "use client";
-import { Scroll, ScrollControls, useScroll, useTexture } from '@react-three/drei';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { useRef } from 'react';
-import { F22model } from './F22';
-import { Mesh } from 'three';
-
-
-
-
-function Scene() {
-  const meshRef = useRef<Mesh>(null);
-  const scroll = useScroll();
-  const { viewport } = useThree();  // Get the viewport dimensions
-
-  const texture = useTexture('/oceanbg.jpg');
-  // Update the 3D object’s position based on scroll position
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.position.z = Math.max(scroll.offset * -30, -16) + (Math.sin(state.clock.getElapsedTime()*0.5) * 0.45);
-      //meshRef.current.position.y = Math.min(1.2, Math.max(-1.2, -1.2 + scroll.offset * 2));
-      meshRef.current.position.y = -1.2 - Math.min(30, scroll.offset * 16);
-      meshRef.current.position.x = 0 + Math.min(16, scroll.offset * 30);
-
-      meshRef.current.position.y = -1.2 - scroll.offset * 16;
-
-
-      meshRef.current.rotation.x = 0.5 - Math.min(6.2, scroll.offset*16) + (Math.sin(0.2+state.clock.getElapsedTime()*0.35) * 0.15);
-      meshRef.current.rotation.y = 0 ;
-
-    }
-  });
-
-  return (
-    <>
-      {/* Background image plane */}
-      <mesh position={[1, 0, -20]}>
-        <planeGeometry args={[viewport.width * 6, viewport.height * 6.5]} />
-        <meshBasicMaterial attach="material" map={texture} />
-      </mesh>
-
-      {/* 3D Object */}
-      <mesh ref={meshRef} position={[0.6, 0, 0]} rotation={[0.3, 0, 0]}>
-        <F22model scale={0.45} />
-
-      </mesh>
-    </>
-  );
-}
+import { Scroll, ScrollControls } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import { useState, useEffect, ReactNode } from 'react';
+import Tabs from './tabs.js'
+import Tab from './tab'
+import F16vars from './F16vars'
+import { Scene } from './Scene';
+import AboutUs from './AboutUs';
+import ServicesHero from './ServicesHero';
+import Helicopters from './Helicopters';
+import Radar from './Radar';
+import Radio from './Radio';
 
 export default function ThreeDPage() {
   return (
@@ -55,24 +19,24 @@ export default function ThreeDPage() {
         <div className="w-full py-2">
           <img src='/logo.png' />
         </div>
-<div className="inline-flex rounded-3xl shadow-sm w-full" role="group">
-  <button type="button" className="grow px-4 py-3 text-sm font-medium rounded-s-3xl focus:z-10 focus:ring-2  text-white hover:text-white hover:bg-gray-700 focus:ring-blue-500 focus:text-white">
-    Services
-  </button>
-  <button type="button" className="grow px-4 py-3 text-sm font-medium focus:z-10 focus:ring-2  text-white hover:text-white hover:bg-gray-700 focus:ring-blue-500 focus:text-white">
-    Inventory
-  </button>
-  <button type="button" className="grow px-4 py-3 text-sm font-medium rounded-e-3xl focus:z-10 focus:ring-2  text-white hover:text-white hover:bg-gray-700 focus:ring-blue-500 focus:text-white">
-    Contact
-  </button>
-</div>
+        <div className="inline-flex rounded-3xl shadow-sm w-full" role="group">
+          <button type="button" className="grow px-4 py-3 text-sm font-medium rounded-s-3xl focus:z-10 focus:ring-2  text-white hover:text-white hover:bg-gray-700 focus:ring-blue-500 focus:text-white">
+            Services
+          </button>
+          <button type="button" className="grow px-4 py-3 text-sm font-medium focus:z-10 focus:ring-2  text-white hover:text-white hover:bg-gray-700 focus:ring-blue-500 focus:text-white">
+            Inventory
+          </button>
+          <button type="button" className="grow px-4 py-3 text-sm font-medium rounded-e-3xl focus:z-10 focus:ring-2  text-white hover:text-white hover:bg-gray-700 focus:ring-blue-500 focus:text-white">
+            Contact
+          </button>
+        </div>
       </div>
 
       <Canvas>
         <ambientLight intensity={0.2} />
-        <pointLight position={[1, 10, -3]} intensity={2} distance={200}/>
+        <pointLight position={[1, 10, -3]} intensity={2} distance={200} />
         {/* Enables smooth scrolling behavior */}
-        <ScrollControls pages={3} distance={1}>
+        <ScrollControls pages={5} distance={1}>
           <Scroll>
             <Scene />
           </Scroll>
@@ -80,72 +44,157 @@ export default function ThreeDPage() {
           {/* Page content beneath the canvas */}
           <Scroll html>
             <div className="absolute h-[200vh] w-[100vw] bg-gradient-to-b from-transparent to-slate-900 z-11">
-              
-            <div className="absolute left-[50vw] transform -translate-x-1/2 top-[90vh] rounded-3xl p-5 bg-neutral-800/20 flex flex-col justify-center items-center">
-              <div className="text-center w-[20vw] text-xl font-semibold text-white">
-                Scroll to learn about us!
-              </div>
-              <div className="mt-4 flex flex-col items-center">
-                <span className="text-2xl text-white animate-bounce delay-500">▼</span>
-                <span className="text-2xl text-white animate-bounce delay-500">▼</span>
-                <span className="text-2xl text-white animate-bounce delay-500">▼</span>
-              </div>
-            </div>
-            <div className="absolute top-[120vh] w-screen flex justify-center items-center h-fit z-99">
 
-            <section className="bg-right bg-no-repeat bg-cover bg-[url('/8yxzrz.png')] bg-gray-700 bg-blend-multiply rounded-3xl">
-    <div className="px-4 mx-auto max-w-[85vw] text-center py lg:py-56">
-        <h1 className="mb-4 text-4xl font-extrabold tracking-tight leading-none text-white md:text-5xl lg:text-6xl">About Us</h1>
-        <p className="mb-8 text-lg font-normal text-gray-300 lg:text-xl sm:px-16 lg:px-48">We specialize in finding innovative solutions to the most complex challenges in the aviation spare parts industry. With years of experience and a dedication to excellence, we are committed to delivering results that exceed your expectations. Whether you need help with sourcing, research, or any other aspect of the spare parts in the aviation industry, we have the knowledge and expertise to help you succeed. We can help you find solutions to your aviation spare parts issues.</p>
-        <div className="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0">
-            <a href="#" className="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-900">
-                Get started
-                <svg className="w-3.5 h-3.5 ms-2 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9"/>
+              <div className="absolute left-[50vw] transform -translate-x-1/2 top-[90vh] rounded-3xl p-5 bg-neutral-800/20 flex flex-col justify-center items-center">
+                <div className="text-center w-[20vw] text-xl font-semibold text-white">
+                  Scroll to learn about us!
+                </div>
+                <div className="mt-4 flex flex-col items-center">
+                  <span className="text-2xl text-white animate-bounce delay-500">▼</span>
+                  <span className="text-2xl text-white animate-bounce delay-500">▼</span>
+                  <span className="text-2xl text-white animate-bounce delay-500">▼</span>
+                </div>
+              </div>
+
+              <div className="absolute top-[120vh] w-screen flex justify-center items-center h-fit z-99">
+                <AboutUs />
+              </div>
+
+              <div className="absolute top-[215vh] pl-[7.5vw] flex h-fit z-99">
+                <h1 className="text-9xl font-bold">SERVICES</h1>
+              </div>
+
+              <div className="absolute top-[245vh] w-screen flex justify-center items-center h-fit z-99">
+                <ServicesHero />
+              </div>
+
+              <div className="absolute top-[330vh] w-screen justify-center items-center flex h-fit z-99">
+                <h1 className="text-6xl font-bold">INVENTORY</h1>
+              </div>
+              <div className="absolute top-[350vh] w-screen h-[40vh] flex justify-between items-center px-[7.5vw]">
+                {/* Left Side */}
+                <div className="w-[40vw] flex justify-start items-start h-fit z-10">
+                  <F16vars />
+                </div>
+
+                {/* Right Side */}
+                <div className="w-[40vw] flex justify-end items-center h-fit z-10">
+                  <Helicopters />
+                </div>
+              </div>
+
+              <div className="absolute top-[400vh] w-screen h-[40vh] flex justify-between items-center px-[7.5vw]">
+                {/* Left Side */}
+                <div className="w-[40vw] flex justify-start items-start h-fit z-10">
+                  <Radar />
+                </div>
+
+                {/* Right Side */}
+                <div className="w-[40vw] flex justify-end items-center h-fit z-10">
+                  <Radio />
+                </div>
+              </div>
+
+              <div className="absolute top-[445vh] h-[30vh] w-full z-15">
+
+              </div>
+
+              <div className="absolute top-[475vh] h-[25vh] w-screen ">
+
+
+              <footer className="bg-neutral-800">
+    <div className="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
+        <div className="md:flex md:justify-between">
+          <div className="mb-6 md:mb-0">
+              <a href="#" className="flex items-center">
+                  <img src="/logo.png" className="h-12 me-3" alt="Logo" />
+              </a>
+          </div>
+          <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+              <div>
+                  <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Resources</h2>
+                  <ul className="text-gray-500 dark:text-gray-400 font-medium">
+                      <li className="mb-4">
+                          <a href="https://connordavis.xyz/" className="hover:underline">Flowbite</a>
+                      </li>
+                      <li>
+                          <a href="https://connordavis.xyz/" className="hover:underline">Tailwind CSS</a>
+                      </li>
+                  </ul>
+              </div>
+              <div>
+                  <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Follow us</h2>
+                  <ul className="text-gray-500 dark:text-gray-400 font-medium">
+                      <li className="mb-4">
+                          <a href="https://connordavis.xyz" className="hover:underline ">Github</a>
+                      </li>
+                      <li>
+                          <a href="https://connordavis.xyz" className="hover:underline">Discord</a>
+                      </li>
+                  </ul>
+              </div>
+              <div>
+                  <h2 className="mb-6 text-sm font-semibold text-gray-900 uppercase dark:text-white">Legal</h2>
+                  <ul className="text-gray-500 dark:text-gray-400 font-medium">
+                      <li className="mb-4">
+                          <a href="#" className="hover:underline">Privacy Policy</a>
+                      </li>
+                      <li>
+                          <a href="#" className="hover:underline">Terms &amp; Conditions</a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+      <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
+      <div className="sm:flex sm:items-center sm:justify-between">
+          <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="https://connordavis.xyz/" className="hover:underline">ConnorDavis.xyz</a>. All Rights Reserved.
+          </span>
+          <div className="flex mt-4 sm:justify-center sm:mt-0">
+              <a href="#" className="text-gray-500 hover:text-gray-900 dark:hover:text-white">
+                  <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 8 19">
+                        <path fillRule="evenodd" d="M6.135 3H8V0H6.135a4.147 4.147 0 0 0-4.142 4.142V6H0v3h2v9.938h3V9h2.021l.592-3H5V3.591A.6.6 0 0 1 5.592 3h.543Z" clipRule="evenodd"/>
+                    </svg>
+                  <span className="sr-only">Facebook page</span>
+              </a>
+              <a href="#" className="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+                  <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 21 16">
+                        <path d="M16.942 1.556a16.3 16.3 0 0 0-4.126-1.3 12.04 12.04 0 0 0-.529 1.1 15.175 15.175 0 0 0-4.573 0 11.585 11.585 0 0 0-.535-1.1 16.274 16.274 0 0 0-4.129 1.3A17.392 17.392 0 0 0 .182 13.218a15.785 15.785 0 0 0 4.963 2.521c.41-.564.773-1.16 1.084-1.785a10.63 10.63 0 0 1-1.706-.83c.143-.106.283-.217.418-.33a11.664 11.664 0 0 0 10.118 0c.137.113.277.224.418.33-.544.328-1.116.606-1.71.832a12.52 12.52 0 0 0 1.084 1.785 16.46 16.46 0 0 0 5.064-2.595 17.286 17.286 0 0 0-2.973-11.59ZM6.678 10.813a1.941 1.941 0 0 1-1.8-2.045 1.93 1.93 0 0 1 1.8-2.047 1.919 1.919 0 0 1 1.8 2.047 1.93 1.93 0 0 1-1.8 2.045Zm6.644 0a1.94 1.94 0 0 1-1.8-2.045 1.93 1.93 0 0 1 1.8-2.047 1.918 1.918 0 0 1 1.8 2.047 1.93 1.93 0 0 1-1.8 2.045Z"/>
+                    </svg>
+                  <span className="sr-only">Discord community</span>
+              </a>
+              <a href="#" className="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+                  <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 17">
+                    <path fillRule="evenodd" d="M20 1.892a8.178 8.178 0 0 1-2.355.635 4.074 4.074 0 0 0 1.8-2.235 8.344 8.344 0 0 1-2.605.98A4.13 4.13 0 0 0 13.85 0a4.068 4.068 0 0 0-4.1 4.038 4 4 0 0 0 .105.919A11.705 11.705 0 0 1 1.4.734a4.006 4.006 0 0 0 1.268 5.392 4.165 4.165 0 0 1-1.859-.5v.05A4.057 4.057 0 0 0 4.1 9.635a4.19 4.19 0 0 1-1.856.07 4.108 4.108 0 0 0 3.831 2.807A8.36 8.36 0 0 1 0 14.184 11.732 11.732 0 0 0 6.291 16 11.502 11.502 0 0 0 17.964 4.5c0-.177 0-.35-.012-.523A8.143 8.143 0 0 0 20 1.892Z" clipRule="evenodd"/>
                 </svg>
-            </a>
-            <a href="#" className="inline-flex justify-center hover:text-gray-900 items-center py-3 px-5 sm:ms-4 text-base font-medium text-center text-white rounded-lg border border-white hover:bg-gray-100 focus:ring-4 focus:ring-gray-400">
-                Learn more
-            </a>  
-        </div>
+                  <span className="sr-only">Twitter page</span>
+              </a>
+              <a href="#" className="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+                  <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M10 .333A9.911 9.911 0 0 0 6.866 19.65c.5.092.678-.215.678-.477 0-.237-.01-1.017-.014-1.845-2.757.6-3.338-1.169-3.338-1.169a2.627 2.627 0 0 0-1.1-1.451c-.9-.615.07-.6.07-.6a2.084 2.084 0 0 1 1.518 1.021 2.11 2.11 0 0 0 2.884.823c.044-.503.268-.973.63-1.325-2.2-.25-4.516-1.1-4.516-4.9A3.832 3.832 0 0 1 4.7 7.068a3.56 3.56 0 0 1 .095-2.623s.832-.266 2.726 1.016a9.409 9.409 0 0 1 4.962 0c1.89-1.282 2.717-1.016 2.717-1.016.366.83.402 1.768.1 2.623a3.827 3.827 0 0 1 1.02 2.659c0 3.807-2.319 4.644-4.525 4.889a2.366 2.366 0 0 1 .673 1.834c0 1.326-.012 2.394-.012 2.72 0 .263.18.572.681.475A9.911 9.911 0 0 0 10 .333Z" clipRule="evenodd"/>
+                  </svg>
+                  <span className="sr-only">GitHub account</span>
+              </a>
+              <a href="#" className="text-gray-500 hover:text-gray-900 dark:hover:text-white ms-5">
+                  <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 0a10 10 0 1 0 10 10A10.009 10.009 0 0 0 10 0Zm6.613 4.614a8.523 8.523 0 0 1 1.93 5.32 20.094 20.094 0 0 0-5.949-.274c-.059-.149-.122-.292-.184-.441a23.879 23.879 0 0 0-.566-1.239 11.41 11.41 0 0 0 4.769-3.366ZM8 1.707a8.821 8.821 0 0 1 2-.238 8.5 8.5 0 0 1 5.664 2.152 9.608 9.608 0 0 1-4.476 3.087A45.758 45.758 0 0 0 8 1.707ZM1.642 8.262a8.57 8.57 0 0 1 4.73-5.981A53.998 53.998 0 0 1 9.54 7.222a32.078 32.078 0 0 1-7.9 1.04h.002Zm2.01 7.46a8.51 8.51 0 0 1-2.2-5.707v-.262a31.64 31.64 0 0 0 8.777-1.219c.243.477.477.964.692 1.449-.114.032-.227.067-.336.1a13.569 13.569 0 0 0-6.942 5.636l.009.003ZM10 18.556a8.508 8.508 0 0 1-5.243-1.8 11.717 11.717 0 0 1 6.7-5.332.509.509 0 0 1 .055-.02 35.65 35.65 0 0 1 1.819 6.476 8.476 8.476 0 0 1-3.331.676Zm4.772-1.462A37.232 37.232 0 0 0 13.113 11a12.513 12.513 0 0 1 5.321.364 8.56 8.56 0 0 1-3.66 5.73h-.002Z" clipRule="evenodd"/>
+                </svg>
+                  <span className="sr-only">Dribbble account</span>
+              </a>
+          </div>
+      </div>
     </div>
-</section>
+</footer>
 
+              </div>
 
-</div>
-
-            <div className="absolute top-[220vh] w-screen py-10 items-center">
-
-            <div className="flex flex-col items-center w-full py-10 bg-neutral-800/20">
-  <h2 className="text-5xl font-semibold text-white mb-6">Our Clients</h2>
-  
-  <div className="relative overflow-hidden w-full">
-    <div className="flex gap-6 animate-slide">
-      {/* Replace these divs with images/logos of clients */}
-      <div className="w-32 h-16 flex items-center justify-center bg-neutral-700 rounded-md text-white">Client A</div>
-      <div className="w-32 h-16 flex items-center justify-center bg-neutral-700 rounded-md text-white">Client B</div>
-      <div className="w-32 h-16 flex items-center justify-center bg-neutral-700 rounded-md text-white">Client C</div>
-      <div className="w-32 h-16 flex items-center justify-center bg-neutral-700 rounded-md text-white">Client D</div>
-      <div className="w-32 h-16 flex items-center justify-center bg-neutral-700 rounded-md text-white">Client E</div>
-      {/* Duplicate the items to create a continuous scroll */}
-      <div className="w-32 h-16 flex items-center justify-center bg-neutral-700 rounded-md text-white">Client A</div>
-      <div className="w-32 h-16 flex items-center justify-center bg-neutral-700 rounded-md text-white">Client B</div>
-      <div className="w-32 h-16 flex items-center justify-center bg-neutral-700 rounded-md text-white">Client C</div>
-    </div>
-    </div>
-  </div>
-</div>
-</div>
-<div className="absolute top-[200vh] h-[300vh] w-[100vw] bg-slate-900 z-[-1]">
-  </div>
+            </div>
+            
+            <div className="absolute top-[200vh] h-[300vh] w-[100vw] bg-slate-900 z-[-1]">
+            </div>
           </Scroll>
-          
-          
         </ScrollControls>
-
       </Canvas>
-
     </div>
-
   );
 }

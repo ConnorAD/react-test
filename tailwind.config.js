@@ -14,7 +14,15 @@ module.exports = {
         'soiLightGreyText': '#a0a0a0',
         'soiRed': '#ae2128',
       },
-
+      keyframes: {
+        slideUpUnblur: {
+          '0%': { transform: 'translateY(50px)', filter: 'blur(10px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', filter: 'blur(0)', opacity: '1' },
+        },
+      },
+      animation: {
+        slideUpUnblur: 'slideUpUnblur 1s ease-out forwards',
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
@@ -22,5 +30,6 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+  ],
 }
